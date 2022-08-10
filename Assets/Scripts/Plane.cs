@@ -13,9 +13,7 @@ public class Plane : SceneEntity
     
     public override RaycastHit? Intersect(Ray ray)
     {
-        // By default we use the Unity engine for ray-entity collisions.
-        // See the parent 'SceneEntity' class definition for details.
-        // Task: Replace with your own intersection computations.
+        
         return base.Intersect(ray);
     }
 }

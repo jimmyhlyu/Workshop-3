@@ -37,6 +37,40 @@ public class Scene : MonoBehaviour
         this.debug.Ray(new Ray(Vector3.zero, NormalizedImageToWorldCoord(0f, 0f)), Color.blue);
         
         // Add more rays to visualise here...
+        this.debug.Ray(new Ray(Vector3.zero, NormalizedImageToWorldCoord(1f, 1f)), Color.blue);
+        this.debug.Ray(new Ray(Vector3.zero, NormalizedImageToWorldCoord(1f, 0f)), Color.blue);
+        this.debug.Ray(new Ray(Vector3.zero, NormalizedImageToWorldCoord(0f, 1f)), Color.blue);
+        
+        // (1,1)
+        float offSetX = 1f / this.image.Width;
+        float offSetY = 1f / this.image.Height;
+        float offSetMiddleX = offSetX / 2;
+        float offSetMiddleY = offSetY / 2;
+
+        for (int x = 0; x < image.Width; x++)
+        {
+            for (int y = 0; y < image.Height; y++)
+            {
+                Ray ray = new Ray(Vector3.zero, NormalizedImageToWorldCoord(offSetX * x + offSetMiddleX,
+                    offSetY * y + offSetMiddleY));
+                
+                this.debug.Ray(ray,Color.white);
+                this.image.SetPixel(x,y,Color.black);
+                foreach (var sceneEntity in FindObjectsOfType<SceneEntity>())
+                {
+                    
+                    var result = sceneEntity.Intersect(ray);
+                    if (result.HasValue)
+                    {
+                        this.image.SetPixel(x,y, sceneEntity.Color());
+                    }
+                }
+            }
+            
+        }    
+        
+        
+        
     }
 
     private void Render()
